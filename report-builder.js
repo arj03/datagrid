@@ -47,7 +47,7 @@
 
         _.each(data, function(row) {
 
-	    var e = cloneObj(row);
+	        var e = cloneObj(row);
 
             var dim = dimensionsY[currentLevelIndex];
 
@@ -95,7 +95,7 @@
         });
 
         function sortValues(el, level) 
-	{
+	    {
             var sortedList = [];
             var sortedData = [];
 
@@ -120,7 +120,7 @@
                         }
                         return false; // break
                     }
-		});
+		        });
             }
 
             el.child = sortedData;
@@ -133,7 +133,7 @@
         var level = 0;
 
         function traverseTreeSort(node) 
-	{
+	    {
             ++level;
 
             if (node.child != null) {
@@ -150,7 +150,7 @@
         var flattenedTree = [];
 
         function traverseTreeFlatten(node) 
-	{
+	    {
             if (node.type != "grandtotal" && node.type != "subtotal")
                 flattenedTree.push(node);
 
@@ -168,25 +168,29 @@
         return flattenedTree;
     };
 
-    this.generateDataWithSubTotals = function(yAxis, xAxis, xAxisRestrictions) {
+    this.generateDataWithSubTotals = function(yAxis, xAxis, xAxisRestrictions) 
+    {
         var data = this.generateData(yAxis, xAxis, xAxisRestrictions);
         data.options = { subTotals: true, grandTotals: false };
         return data;
     };
 
-    this.generateDataWithGrandTotals = function(yAxis, xAxis, xAxisRestrictions) {
+    this.generateDataWithGrandTotals = function(yAxis, xAxis, xAxisRestrictions) 
+    {
         var data = this.generateData(yAxis, xAxis, xAxisRestrictions);
         data.options = { subTotals: false, grandTotals: true };
         return data;
     };
 
-    this.generateDataWithSubAndGrandTotals = function(yAxis, xAxis, xAxisRestrictions) {
+    this.generateDataWithSubAndGrandTotals = function(yAxis, xAxis, xAxisRestrictions) 
+    {
         var data = this.generateData(yAxis, xAxis, xAxisRestrictions);
         data.options = { subTotals: true, grandTotals: true };
         return data;
     };
 
-    this.generateData = function(yAxis, xAxis, xAxisRestrictions) {
+    this.generateData = function(yAxis, xAxis, xAxisRestrictions) 
+    {
         var data = { yAxis: [], xAxis: { keyfigures: [], restrictions: [] }, options: {} };
 
         _.each(yAxis, function(e, i) {
@@ -204,8 +208,8 @@
         return data;
     };
 
-    this.localizedHeaders = function(yAxis, fullXAxis) {
-
+    this.localizedHeaders = function(yAxis, fullXAxis) 
+    {
         _.each(yAxis, function(e) {
             e.name = reportState.translateDimKF[e.id];
         });
@@ -231,7 +235,8 @@
     // combinedXAxis: a list of keyfigures with the following syntax {id: '', name: '', [dataref: array, dataindex: indexinarray], [datacalculate: function(row) { }] }
     //
     // returns a list of combined rows
-    this.mergeData = function(allYaxisValues, combinedXAxis) {
+    this.mergeData = function(allYaxisValues, combinedXAxis) 
+    {
         var calculatedResultSet = [];
 
         _.each(allYaxisValues, function(row, i) {
@@ -291,34 +296,34 @@
     // data: a list of data from the server [[{values:[], type: ''}, ...], ...]
     // allXaxis: a list of keyfigure specifications [[{ id: '', name: '' }, ...], ...]
     //
-    this.combineData = function(data, allXaxis, noDimensions) {
-
-	var resultDimensions = {};
-	var result = [];
+    this.combineData = function(data, allXaxis, noDimensions) 
+    {
+	    var resultDimensions = {};
+	    var result = [];
 
         _.each(data, function(jsonData, jsonDataI) {
             var noKeyfigures = allXaxis[jsonDataI].length;
 
             _.each(jsonData, function(e, i) {
 
-		var dimensions = e.values.slice(0, noDimensions);
+		        var dimensions = e.values.slice(0, noDimensions);
 
                 if (dimensions in resultDimensions)
-		{
-		    // append values to existing row
-		    _.each(jsonData[i].values, function(val) {
-			result[i].values.push(val);
-		    });
-		} 
-		else
-		{
-		    result.push(cloneObj(jsonData[i]));
-		}
-	    });
+		        {
+		            // append values to existing row
+		            _.each(jsonData[i].values, function(val) {
+			            result[i].values.push(val);
+		            });
+		        } 
+		        else
+		        {
+		            result.push(cloneObj(jsonData[i]));
+		        }
+	        });
         });
 
         // FIXME: maybe sort this by dimension
 
-	return result;
+	    return result;
     };
 };

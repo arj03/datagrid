@@ -191,10 +191,10 @@
             var td = $(this).closest("td");
             var dimId = reportState.dimensionsY[td[0].cellIndex];
 
-	    // FIXME: we need to use sortValue!
+	        // FIXME: we need to use sortValue!
             var value = td.text();
 
-	    // FIXME: maybe get the sort value instead of the display value as td.text() is
+	        // FIXME: maybe get the sort value instead of the display value as td.text() is
 
             // collapse multiple
             // we have encoded the parent values in the collapse img tag
@@ -252,7 +252,7 @@
                 var td = $(e).closest("td");
                 var value = td.text();
 
-		// FIXME: maybe get the sort value instead of the display value as td.text() is
+		        // FIXME: maybe get the sort value instead of the display value as td.text() is
 
                 // collapse multiple
                 // we have encoded the parent values in the collapse img tag
@@ -299,7 +299,7 @@
 
             var dimValue = e.displayValue;
 
-	    // this is yAxis length - 1 because we can't expand the last dim anyway
+	        // this is yAxis length - 1 because we can't expand the last dim anyway
             if (reportState.useExpandCollapse && i < (yAxis.length - 1) && dimValue != '')
             {
                 if (rowType != 'row') {
@@ -315,7 +315,7 @@
                         lookupKey += yAxis[j].id + ":" + startValues[j].sortValue;
                 }
 
-		var dimId = reportState.dimensionsY[i];
+		        var dimId = reportState.dimensionsY[i];
 
                 if (dimId in reportState.expandedCells) {
                     if (_.contains(reportState.expandedCells[dimId], lookupKey)) {
@@ -327,12 +327,12 @@
                 valuesHTML += format("<td><img src='images/expand.png' data-expandcollapse='{0}' class='expandDimension {2}' />{1}</td>", lookupKey, dimValue, dimId);
             }
             else 
-	    {
+	        {
                 if (i <= yAxis.length - 1) {
                     valuesHTML += format("<td>{0}</td>", dimValue);
                 }
                 else {
-		    // FIXME: formatfloat shit
+		            // FIXME: formatfloat shit
                     if (formatFunctions && formatFunctions[i])
                         valuesHTML += format("<td class='data-kf-value'>{0}</td>", formatFloat(formatFunctions[i](dimValue)));
                     else
