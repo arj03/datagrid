@@ -241,9 +241,10 @@
             var yAxisColumns = row.length;
 
             _.each(combinedXAxis, function (e) {
-                if (e.datacalculate != null)
-                    row.push(e.datacalculate(row, i));
-                else
+                if (e.datacalculate != null) {
+                    var val = e.datacalculate(row, i);
+                    row.push({ sortValue: val, displayValue: val });
+                } else
                     row.push(e.dataref[i].values[yAxisColumns + e.dataindex]);
             });
 

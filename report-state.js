@@ -25,7 +25,7 @@
     //this.keyfigures = [];
 
     // english term -> localized term
-    this.translation = {};
+    this.translate = {};
 
     // dimension id or keyfigure id -> localized name
     this.translateDimKF = {};

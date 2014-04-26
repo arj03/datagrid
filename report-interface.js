@@ -36,15 +36,6 @@
         });
     };
 
-    // if we clear a big table before we redraw it again we get quite a dramatic speed increase. 
-    // We can also clear while the server is proceessing data for added concurrency
-    this.clearTableAndFooter = function() 
-    {
-        $("#data").html("");
-        $("#fixedReportTable").html("");
-        $("#footer").html("");
-    };
-
     // domId
     // allYaxisValues the result of getAllYAxisValues
     // data [{ type: "row|subtotal|grandtotal", values: [{ sortValue: "", displayValue: "", sortValueType: "string" }] ]
@@ -53,8 +44,7 @@
     // xAxisRestrictions [{ name: '', visible: false }, ...] 
     // xAxisDimValues [value1, value2, ...]
     //
-    this.drawTable = function(domId, allYaxisValues, data, yAxis, xAxis, 
-			      xAxisRestrictions, xAxisDimValues)
+    this.drawTable = function(domId, allYaxisValues, data, yAxis, xAxis, xAxisRestrictions, xAxisDimValues)
     {
         var dataTable = $(format("#{0}", domId));
         var dataTableHTML = "";
@@ -136,7 +126,7 @@
         _.each(data, function (row, i) {
 
 	    var unmodifiedYaxis = _.take(row.values, yAxis.length);
-            var values = cloneObj(row.values);
+            var values = _.map(row.values, function(e) { return cloneObj(e); });
 
             var foundSubtotal = false;
 
