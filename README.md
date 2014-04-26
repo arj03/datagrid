@@ -30,9 +30,6 @@ reportInterface:
  - drawTable
  - hookupExpandCollapse
 
- - clearTableAndFooter
- - formatFooter  
-
  - addSplits
  - addSplit
 
