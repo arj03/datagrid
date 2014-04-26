@@ -1,31 +1,8 @@
+This is a work in progress, documentation will come
+
 Requirements:
  - underscore.js
  - jQuery 
-
-2 use cases:
-
- - rapport
-   - start med en af generateData funktionerne
-   - getAllYAxisValues
-   - insertMissing?
-   - drawMultiTable
-   - hookupExpandCollapse
-   - formatFooter
-
- - fixed report
-   - start med en af generateData funktionerne
-   - man henter data vha. parameterne og kalder clearTableAndFooter
-   - localizedHeaders på data
-   - getAllYAxisValues
-   - insertMissing?
-   - sætter draw op til: drawMultiTable + addsortheader
-   - enten:
-     - mergeData + draw
-     - sortDataAndDraw (som nu er sortData + kald draw manuelt), 
-     - drawData
-   - formatFooter
-
-mergedata erstatter insertmissing + drawmulti
 
 Interface:
 
