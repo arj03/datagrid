@@ -297,20 +297,6 @@
         $(format("table.simple td:nth-child({0})", colIndex)).css("border-right", "1.5px solid #ccc");
     };
 
-    this.formatFooter = function(domId, startTime, drawingTimeStart) 
-    {
-        var footerCreationTime = GetTimeNow();
-        var footerUser = currentUser;
-        var footerPeriode = $("#day").val();
-        var endTime = new Date();
-
-        var processingTime = format("{0}", timeDifference(endTime, startTime));
-        var browserProcessingTime = format("{0}", timeDifference(endTime, drawingTimeStart));
-
-        var footerHtml = format("<tr><td><b>Report made:</b>{0}</td><td><b>Printed by:</b>{1}</td><td><b>Total processing time:</b>{2}</td><td><b>Browser processing time:</b>{3}</td></tr>", footerCreationTime, footerUser, processingTime, browserProcessingTime);
-        $(format("#{0}", domId)).html(footerHtml);
-    };
-
     this.rowToHTML = function(values, rowType, formatFunctions, yAxis, startValues) 
     {
         var valuesHTML = "";
@@ -399,27 +385,5 @@
             return format("<tr class='topheader'>{0}</tr>", valuesHTML);
         else
             return format("<tr class='header'>{0}</tr>", valuesHTML);
-    }
-
-    function GetTimeNow() 
-    {
-        var currentdate = new Date();
-        var datetime = currentdate.getDate() + "/"
-                        + (currentdate.getMonth() + 1) + "/"
-                        + currentdate.getFullYear() + "  "
-                        + currentdate.getHours() + ":"
-                        + currentdate.getMinutes() + ":"
-                        + currentdate.getSeconds();
-
-        return datetime;
-    }
-
-    function timeDifference(endDate, startDate) 
-    {
-        var difference = endDate.getTime() - startDate.getTime();
-        if (difference < 1000) //ms
-            return difference + "ms";
-        else
-            return Math.floor(difference / 1000) + "." + (difference % 1000) + "s";
     }
 };

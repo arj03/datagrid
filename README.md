@@ -4,38 +4,35 @@ Requirements:
  - underscore.js
  - jQuery 
 
-Interface:
+reportBuilder:
+ - sortData
+ - sortExpandedData
 
- reportBuilder:
-   - sortData
-   - sortExpandedData
+ - generateDataWithSubTotals
+ - generateDataWithGrandTotals
+ - generateDataWithSubAndGrandTotals
+ - generateData
 
-   - generateDataWithSubTotals
-   - generateDataWithGrandTotals
-   - generateDataWithSubAndGrandTotals
-   - generateData
+ - localizedHeaders
 
-   - localizedHeaders
+ - mergeData
+ - getAllYAxisValues
 
-   - mergeData
-   - getAllYAxisValues
+ - combineData
 
-   - combineData
+ - spliceColumn
 
-   - spliceColumn
+reportInterface:
+ - addSortHeaders
+ - addExpandCollapseAll (auto calls hookupExpandCollapseAll)
+ - hookupExpandCollapseAll
 
- reportInterace:
+ - drawTable
+ - hookupExpandCollapse
 
-   - addSortHeaders
-   - addExpandCollapseAll (auto calls hookupExpandCollapseAll)
-   - hookupExpandCollapseAll
+ - clearTableAndFooter
+ - formatFooter  
 
-   - drawTable
-   - hookupExpandCollapse
-
-   - clearTableAndFooter
-   - formatFooter  
-
-   - addSplits
-   - addSplit
+ - addSplits
+ - addSplit
 
