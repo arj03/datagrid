@@ -1,11 +1,11 @@
 ﻿var reportInterface = new function() {
 
-    // public 
+    // public
 
     this.addSortHeaders = function(domId) 
     {
         // sort
-        _.each($(format("#{0} tr.header td", domId)), function(e) { $(e).html($(e).html() + '&nbsp;<img class="sortdown" src="Images/arrow_up.png"/>&nbsp;<img class="sortup" src="Images/arrow_down.png"/>'); });
+        _.each($(format("#{0} tr.header td", domId)), function(e) { $(e).append('&nbsp;<img class="sortdown" src="Images/arrow_up.png"/>&nbsp;<img class="sortup" src="Images/arrow_down.png"/>'); });
 
         $(".sortup").unbind().click(function(e) {
             $("#ajaxSpinnerImage").show();
@@ -159,9 +159,9 @@
             var header = $(format("#{0} tr.header td:eq({1})", domId, i));
 
             if (noExpandedCells > 0)
-                header.html(header.html() + "&nbsp;<img class='expandAll' src='images/expand.png'>");
+                header.append("&nbsp;<img class='expandAll' src='images/expand.png'>");
             else if (noCollapsedCells > 0)
-                header.html(header.html() + "&nbsp;<img class='collapseAll' src='images/collapse.png'>");
+                header.append("&nbsp;<img class='collapseAll' src='images/collapse.png'>");
         });
 
         this.hookupExpandCollapseAll(domId);
