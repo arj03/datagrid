@@ -5,7 +5,7 @@
     this.addSortHeaders = function(domId) 
     {
         // sort
-        _.each($(format("#{0} tr.header td", domId)), function(e) { $(e).append('&nbsp;<img class="sortdown" src="Images/arrow_up.png"/>&nbsp;<img class="sortup" src="Images/arrow_down.png"/>'); });
+        _.each($(format("#{0} tr.header td", domId)), function(e) { $(e).append(format('&nbsp;<img class="sortdown" src="{0}arrow_up.png"/>&nbsp;<img class="sortup" src="{0}arrow_down.png"/>', reportState.imagePath)); });
 
         $(".sortup").unbind().click(function(e) {
             $("#ajaxSpinnerImage").show();
@@ -159,9 +159,9 @@
             var header = $(format("#{0} tr.header td:eq({1})", domId, i));
 
             if (noExpandedCells > 0)
-                header.append("&nbsp;<img class='expandAll' src='images/expand.png'>");
+                header.append(format("&nbsp;<img class='expandAll' src='{0}expand.png'>", reportState.imagePath));
             else if (noCollapsedCells > 0)
-                header.append("&nbsp;<img class='collapseAll' src='images/collapse.png'>");
+                header.append(format("&nbsp;<img class='collapseAll' src='{0}collapse.png'>", reportState.imagePath));
         });
 
         this.hookupExpandCollapseAll(domId);
@@ -182,7 +182,7 @@
                 reportState.expandedCells[dimId] = [expandValue];
 
             // we don't need data-expandcollapse as we draw anyway
-            $(this).replaceWith("<img src='images/collapse.png' class='collapseDimension'/>");
+            $(this).replaceWith(format("<img src='{0}collapse.png' class='collapseDimension'/>", reportState.imagePath));
 
             reportState.drawNewData();
         });
@@ -212,7 +212,7 @@
             });
 
             // we don't need data-expandcollapse as we draw anyway
-            $(this).replaceWith("<img src='images/expand.png' class='expandDimension'/>");
+            $(this).replaceWith(format("<img src='{0}expand.png' class='expandDimension'/>", reportState.imagePath));
 
             reportState.drawNewData();
         });
@@ -235,7 +235,7 @@
                     reportState.expandedCells[dimId] = [expandValue];
 
                 // we don't need data-expandcollapse as we draw anyway
-                $(e).replaceWith("<img src='images/collapse.png' class='collapseDimension'/>");
+                $(e).replaceWith(format("<img src='{0}collapse.png' class='collapseDimension'/>", reportState.imagePath));
             });
 
             reportState.drawNewData();
@@ -270,7 +270,7 @@
                 });
 
                 // we don't need data-expandcollapse as we draw anyway
-                $(e).replaceWith("<img src='images/expand.png' class='expandDimension'/>");
+                $(e).replaceWith(format("<img src='{0}expand.png' class='expandDimension'/>", reportState.imagePath));
             });
 
             reportState.drawNewData();
@@ -319,12 +319,12 @@
 
                 if (dimId in reportState.expandedCells) {
                     if (_.contains(reportState.expandedCells[dimId], lookupKey)) {
-                        valuesHTML += format("<td><img src='images/collapse.png' data-expandcollapse='{0}' class='collapseDimension {2}' />{1}</td>", lookupKey, dimValue, dimId);
+                        valuesHTML += format("<td><img src='{0}collapse.png' data-expandcollapse='{1}' class='collapseDimension {3}' />{2}</td>", reportState.imagePath, lookupKey, dimValue, dimId);
                         return;
                     }
                 }
 
-                valuesHTML += format("<td><img src='images/expand.png' data-expandcollapse='{0}' class='expandDimension {2}' />{1}</td>", lookupKey, dimValue, dimId);
+                valuesHTML += format("<td><img src='{0}expand.png' data-expandcollapse='{1}' class='expandDimension {3}' />{2}</td>", reportState.imagePath, lookupKey, dimValue, dimId);
             }
             else 
 	        {

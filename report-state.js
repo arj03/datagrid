@@ -29,4 +29,7 @@
 
     // dimension id or keyfigure id -> localized name
     this.translateDimKF = {};
+
+    // the relative path where images resides
+    this.imagePath = "images/";
 };

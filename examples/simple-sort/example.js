@@ -18,6 +18,11 @@ $(function() {
     reportState.imagePath = "../../images/";
 
     var allYAxisValues = reportBuilder.getYAxisValues(reportState.serverData, yAxis);
-    
-    reportInterface.drawTable("data", allYAxisValues, reportState.serverData, yAxis, keyfigures);
+
+    reportState.drawData = function(data) {
+        reportInterface.drawTable("data", allYAxisValues, data, yAxis, keyfigures);
+        reportInterface.addSortHeaders("data");
+    };
+
+    reportState.drawData(reportState.serverData);
 });
