@@ -8,7 +8,6 @@
         _.each($(format("#{0} tr.header td", domId)), function(e) { $(e).append(format('&nbsp;<img class="sortdown" src="{0}arrow_up.png"/>&nbsp;<img class="sortup" src="{0}arrow_down.png"/>', reportState.imagePath)); });
 
         $(".sortup").unbind().click(function(e) {
-            $("#ajaxSpinnerImage").show();
 
             reportState.sortRowIndex = $(this).parent().index();
             reportState.sortDirection = "up";
@@ -17,12 +16,9 @@
                 reportState.drawData(reportBuilder.sortExpandedData(reportState.serverData, reportState.dimensionsY, reportState.sortRowIndex, reportState.sortDirection));
             else
                 reportState.drawData(reportBuilder.sortData(reportState.serverData, reportState.sortRowIndex, reportState.sortDirection));
-
-            $("#ajaxSpinnerImage").hide();
         });
 
         $(".sortdown").unbind().click(function(e) {
-            $("#ajaxSpinnerImage").show();
 
             reportState.sortRowIndex = $(this).parent().index();
             reportState.sortDirection = "down";
@@ -32,7 +28,6 @@
             else
                 reportState.drawData(reportBuilder.sortData(reportState.serverData, reportState.sortRowIndex, reportState.sortDirection));
 
-            $("#ajaxSpinnerImage").hide();
         });
     };
 
