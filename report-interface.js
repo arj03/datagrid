@@ -244,10 +244,10 @@
 
         _.each(values, function(e, i) {
 
-            var dimValue = e.displayValue;
+            var dimValue = e.displayValue == '' ? '&nbsp;' : e.displayValue;
 
 	        // this is yAxis length - 1 because we can't expand the last dim anyway
-            if (reportState.useExpandCollapse && i < (yAxis.length - 1) && dimValue != '')
+            if (reportState.useExpandCollapse && i < (yAxis.length - 1) && dimValue != '&nbsp;')
             {
                 if (rowType != 'row') {
                     valuesHTML += format("<td>{0}</td>", dimValue);
