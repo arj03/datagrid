@@ -31,6 +31,25 @@
         });
     };
 
+    // adds expand/collapse all to dimension headers and hookup click handlers
+    this.addExpandCollapseHeaders = function(domId)
+    {
+        _.each(reportState.dimensionsY, function(e, i) {
+
+            var noExpandedCells = $(format("img.expandDimension.{0}", e)).length;
+            var noCollapsedCells = $(format("img.collapseDimension.{0}", e)).length;
+
+            var header = $(format("#{0} tr.header td:eq({1})", domId, i));
+
+            if (noExpandedCells > 0)
+                header.append(format("&nbsp;<img class='expandAll' src='{0}expand.png'>", reportState.imagePath));
+            else if (noCollapsedCells > 0)
+                header.append(format("&nbsp;<img class='collapseAll' src='{0}collapse.png'>", reportState.imagePath));
+        });
+
+        this.hookupExpandCollapseAll(domId);
+    };
+
     // domId
     // allYaxisValues the result of getAllYAxisValues
     // data [{ type: "row|subtotal|grandtotal", values: [{ sortValue: "", displayValue: "", sortValueType: "string" }] ]
@@ -141,76 +160,9 @@
         });
 
         dataTable.html(dataTableHTML);
-    };
 
-    // adds expand/collapse all to dimension headers and hookup click handlers
-    this.addExpandCollapseHeaders = function(domId)
-    {
-        _.each(reportState.dimensionsY, function(e, i) {
-
-            var noExpandedCells = $(format("img.expandDimension.{0}", e)).length;
-            var noCollapsedCells = $(format("img.collapseDimension.{0}", e)).length;
-
-            var header = $(format("#{0} tr.header td:eq({1})", domId, i));
-
-            if (noExpandedCells > 0)
-                header.append(format("&nbsp;<img class='expandAll' src='{0}expand.png'>", reportState.imagePath));
-            else if (noCollapsedCells > 0)
-                header.append(format("&nbsp;<img class='collapseAll' src='{0}collapse.png'>", reportState.imagePath));
-        });
-
-        this.hookupExpandCollapseAll(domId);
-    };
-
-    // adds click handler to expand/collapse buttons in the table
-    this.hookupExpandCollapse = function(domId)
-    {
-        $(format("#{0} .expandDimension", domId)).click(function() {
-            var td = $(this).closest("td");
-            var dimId = reportState.dimensionsY[td[0].cellIndex];
-
-            var expandValue = $(this).data("expandcollapse");
-
-            if (dimId in reportState.expandedCells)
-                reportState.expandedCells[dimId].push(expandValue);
-            else
-                reportState.expandedCells[dimId] = [expandValue];
-
-            // we don't need data-expandcollapse as we draw anyway
-            $(this).replaceWith(format("<img src='{0}collapse.png' class='collapseDimension'/>", reportState.imagePath));
-
-            reportState.drawNewData();
-        });
-
-        $(format("#{0} .collapseDimension", domId)).click(function() {
-            var td = $(this).closest("td");
-            var dimId = reportState.dimensionsY[td[0].cellIndex];
-
-	        // FIXME: we need to use sortValue!
-            var value = td.text();
-
-	        // FIXME: maybe get the sort value instead of the display value as td.text() is
-
-            // collapse multiple
-            // we have encoded the parent values in the collapse img tag
-            // so we need to remove these as well
-            var cells = _.map($(format("img.collapseDimension[data-expandcollapse*='{0}']", dim + ':' + value)), function(e) { return $(e).data('expandcollapse'); });
-
-            _.each(reportState.expandedCells, function(tempValues, expandedDim) {
-                _.each(cells, function(cell) {
-                    reportState.expandedCells[expandedDim] = _.without(reportState.expandedCells[expandedDim], cell);
-                    if (reportState.expandedCells[expandedDim].length == 0) {
-                        delete reportState.expandedCells[expandedDim];
-                        return false; // break
-                    }
-                });
-            });
-
-            // we don't need data-expandcollapse as we draw anyway
-            $(this).replaceWith(format("<img src='{0}expand.png' class='expandDimension'/>", reportState.imagePath));
-
-            reportState.drawNewData();
-        });
+        if (reportState.useExpandCollapse)
+            hookupExpandCollapse(domId);
     };
 
     this.hookupExpandCollapseAll = function(domId) 
@@ -343,6 +295,58 @@
     };
 
     // private
+    
+    // adds click handler to expand/collapse buttons in the table
+    function hookupExpandCollapse(domId)
+    {
+        $(format("#{0} .expandDimension", domId)).click(function() {
+            var td = $(this).closest("td");
+            var dimId = reportState.dimensionsY[td[0].cellIndex];
+
+            var expandValue = $(this).data("expandcollapse");
+
+            if (dimId in reportState.expandedCells)
+                reportState.expandedCells[dimId].push(expandValue);
+            else
+                reportState.expandedCells[dimId] = [expandValue];
+
+            // we don't need data-expandcollapse as we draw anyway
+            $(this).replaceWith(format("<img src='{0}collapse.png' class='collapseDimension'/>", reportState.imagePath));
+
+            reportState.drawNewData();
+        });
+
+        $(format("#{0} .collapseDimension", domId)).click(function() {
+            var td = $(this).closest("td");
+            var dimId = reportState.dimensionsY[td[0].cellIndex];
+
+	        // FIXME: we need to use sortValue!
+            var value = td.text();
+
+	        // FIXME: maybe get the sort value instead of the display value as td.text() is
+
+            // collapse multiple
+            // we have encoded the parent values in the collapse img tag
+            // so we need to remove these as well
+            var cells = _.map($(format("img.collapseDimension[data-expandcollapse*='{0}']", dimId + ':' + value)), function(e) { return $(e).data('expandcollapse'); });
+
+            _.each(reportState.expandedCells, function(tempValues, expandedDim) {
+                _.each(cells, function(cell) {
+                    reportState.expandedCells[expandedDim] = _.without(reportState.expandedCells[expandedDim], cell);
+                    if (reportState.expandedCells[expandedDim].length == 0) {
+                        delete reportState.expandedCells[expandedDim];
+                        return false; // break
+                    }
+                });
+            });
+
+            // we don't need data-expandcollapse as we draw anyway
+            $(this).replaceWith(format("<img src='{0}expand.png' class='expandDimension'/>", reportState.imagePath));
+
+            reportState.drawNewData();
+        });
+    };
+
     function headerRowToHTML(values, top) 
     {
         var valuesHTML = "";

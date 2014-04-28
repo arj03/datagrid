@@ -4,6 +4,7 @@
     this.serverData = [];
 
     // the function used to draw the server data
+    // data: same format as serverData
     this.drawData = null;
 
     // must be a function that can request data again and draw

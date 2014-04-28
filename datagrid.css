@@ -22,6 +22,10 @@ table.datagrid tr.header {
     color: #fff;
 }
 
+table.datagrid tbody tr:nth-child(2n+1) td {
+    background-color: #FBFBFB;
+}
+
 table.datagrid tr.grandtotal td {
     background-color: #D3D3D3 !important;
 	border-top: solid 1px #000;

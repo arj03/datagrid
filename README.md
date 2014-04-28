@@ -25,10 +25,10 @@ reportBuilder:
 reportInterface:
  - addSortHeaders
  - addExpandCollapseAll (auto calls hookupExpandCollapseAll)
- - hookupExpandCollapseAll
 
  - drawTable
- - hookupExpandCollapse
+
+ - hookupExpandCollapseAll
 
  - addSplits
  - addSplit
