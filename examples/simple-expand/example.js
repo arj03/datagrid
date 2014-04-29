@@ -25,6 +25,7 @@ $(function() {
     var allYAxisValues = reportBuilder.getYAxisValues(reportState.serverData, yAxis);
 
     reportState.drawNewData = function(data) { 
+        // this also simulates a server backend returning new results
         reportState.serverData = [];
 
         if (_.any(reportState.expandedCells['store'], function(e) { return e == 'store:Copenhagen'; }))
@@ -59,7 +60,10 @@ $(function() {
 
         reportState.serverData.push({ type: 'grandtotal', values: [cellValue('Grand total'), cellValue(''), cellValue("1073"), cellValue("115232")] });
 
-        reportState.drawData(reportState.serverData);
+        if (reportState.sortRowIndex != -1)
+            reportState.drawData(reportBuilder.sortExpandedData(reportState.serverData, reportState.dimensionsY, reportState.sortRowIndex, reportState.sortDirection));
+        else
+            reportState.drawData(reportState.serverData);
     };
     
     reportState.drawData = function(data) {
