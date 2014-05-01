@@ -296,7 +296,8 @@
     // data: a list of data from the server [[{values:[], type: ''}, ...], ...]
     // allXaxis: a list of keyfigure specifications [[{ id: '', name: '' }, ...], ...]
     //
-    this.combineData = function(data, allXaxis, noDimensions) 
+    // FIXME: could work better if the number of yAxis values are not the same
+    this.combineData = function(data, allXaxis, yAxis) 
     {
 	    var resultDimensions = {};
 	    var result = [];
@@ -306,18 +307,20 @@
 
             _.each(jsonData, function(e, i) {
 
-		        var dimensions = e.values.slice(0, noDimensions);
+		        var dimensions = JSON.stringify(e.values.slice(0, yAxis.length));
 
                 if (dimensions in resultDimensions)
 		        {
 		            // append values to existing row
-		            _.each(jsonData[i].values, function(val) {
-			            result[i].values.push(val);
+		            _.each(e.values, function(val, j) {
+                        if (j >= yAxis.length)
+			                result[resultDimensions[dimensions]].values.push(cloneObj(val));
 		            });
 		        } 
 		        else
 		        {
 		            result.push(cloneObj(jsonData[i]));
+                    resultDimensions[dimensions] = result.length - 1;
 		        }
 	        });
         });

@@ -1,4 +1,4 @@
-This is a work in progress, documentation will come
+This is a work in progress, documentation will come. For now the examples directory is your best source.
 
 Requirements:
  - underscore.js
