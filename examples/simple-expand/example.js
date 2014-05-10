@@ -10,6 +10,8 @@ $(function() {
     // normally one would request data here from the server using yAxis and keyfigures
     // but to keep things simple, we type in the result below
 
+    var reportState = new ReportState();
+
     reportState.dimensionsY = _.map(yAxis, function(e) { return e.id; });
 
     reportState.serverData = [
@@ -67,9 +69,9 @@ $(function() {
     };
     
     reportState.drawData = function(data) {
-        reportInterface.drawTable("data", allYAxisValues, data, yAxis, keyfigures);
-        reportInterface.addSortHeaders("data");
-        reportInterface.addExpandCollapseHeaders("data");
+        reportInterface.drawTable("data", reportState, allYAxisValues, data, yAxis, keyfigures);
+        reportInterface.addSortHeaders("data", reportState);
+        reportInterface.addExpandCollapseHeaders("data", reportState);
     };
 
     reportState.drawData(reportState.serverData);

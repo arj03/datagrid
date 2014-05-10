@@ -7,7 +7,9 @@ $(function() {
     var yAxis = [{ id: 'store', name: 'Store' }];
     var keyfigures = [{ id: 'nocustomers', name: 'Customers' }, { id: 'turnover', name: 'Turnover' }];
 
-    // danish translation
+    var reportState = new ReportState();
+
+    // Danish translation
     reportState.translateDimKF['store'] = 'Butik';
     reportState.translateDimKF['nocustomers'] = 'Antal kunder';
     reportState.translateDimKF['turnover'] = 'Omsætning';
@@ -25,9 +27,9 @@ $(function() {
     reportState.useExpandCollapse = false;
     reportState.imagePath = "../../images/";
 
-    reportBuilder.localizedHeaders(yAxis, keyfigures);
+    reportBuilder.localizedHeaders(yAxis, keyfigures, reportState);
 
     var allYAxisValues = reportBuilder.getYAxisValues(reportState.serverData, yAxis);
     
-    reportInterface.drawTable("data", allYAxisValues, reportState.serverData, yAxis, keyfigures);
+    reportInterface.drawTable("data", reportState, allYAxisValues, reportState.serverData, yAxis, keyfigures);
 });

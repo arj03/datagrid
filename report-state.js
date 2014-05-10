@@ -1,4 +1,4 @@
-﻿var reportState = new function () {
+﻿function ReportState() {
 
     // format: [{ type: "row|subtotal|grandtotal", values: [{ sortValue: "", displayValue: "", sortValueType: "string" }] ]
     this.serverData = [];

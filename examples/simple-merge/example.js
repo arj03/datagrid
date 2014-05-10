@@ -61,6 +61,8 @@ $(function() {
         { type: 'grandtotal', values: [cellValue('Grand total'), cellValue("15"), cellValue("12500")] }
     ];
 
+    var reportState = new ReportState();
+
     reportState.useExpandCollapse = false;
     reportState.imagePath = "../../images/";
 
@@ -89,5 +91,5 @@ $(function() {
 
     reportState.serverData = reportBuilder.mergeData(allYAxisValues, combinedKeyFigures);
 
-    reportInterface.drawTable("data", allYAxisValues, reportState.serverData, yAxis, combinedKeyFigures);
+    reportInterface.drawTable("data", reportState, allYAxisValues, reportState.serverData, yAxis, combinedKeyFigures);
 });

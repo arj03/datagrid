@@ -33,7 +33,7 @@
     };
 
     // this can sort expanded data, making sure to sort each independently
-    this.sortExpandedData = function(data, dimensionsY, rowIndex, direction) 
+    this.sortExpandedData = function(data, dimensionsY, rowIndex, direction, expandedCells) 
     {
         // transforms data into a tree, were the parent is the sub total of the leaves
 
@@ -51,7 +51,7 @@
 
             var dim = dimensionsY[currentLevelIndex];
 
-            if (reportState.expandedCells[dim] && _.any(reportState.expandedCells[dim], function(expandedValue) { return expandedValue.indexOf(e.values[currentLevelIndex].displayValue) != -1; })) // start of sub total
+            if (expandedCells[dim] && _.any(expandedCells[dim], function(expandedValue) { return expandedValue.indexOf(e.values[currentLevelIndex].displayValue) != -1; })) // start of sub total
             {
                 if (state != "start") {
                     _.each(currentLevelRows, function(e2) {
@@ -208,7 +208,7 @@
         return data;
     };
 
-    this.localizedHeaders = function(yAxis, fullXAxis) 
+    this.localizedHeaders = function(yAxis, fullXAxis, reportState) 
     {
         _.each(yAxis, function(e) {
             e.name = reportState.translateDimKF[e.id];
@@ -226,10 +226,7 @@
 
     // this is a way to merge multiple data sets into one, a use case
     // would be to get data for this year and last year, and to
-    // combine these, maybe adding an index.
-    //
-    // might be a good idea to run insertMissingValues first to make
-    // sure all data have the same number of rows
+    // combine these, maybe adding an index (this year / last year).
     //
     // allYaxisValues: a list of dimension values
     // combinedXAxis: a list of keyfigures with the following syntax {id: '', name: '', [dataref: array, dataindex: indexinarray], [datacalculate: function(row) { }] }

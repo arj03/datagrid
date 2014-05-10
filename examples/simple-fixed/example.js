@@ -10,6 +10,8 @@ $(function() {
     // normally one would request data here from the server using yAxis and keyfigures
     // but to keep things simple, we type in the result below
 
+    var reportState = new ReportState();
+
     reportState.serverData = [
         { type: 'row', values: [cellValue('Copenhagen'), cellValue("210"), cellValue("43100")] },
         { type: 'row', values: [cellValue('Stockholm'), cellValue("120"), cellValue("22100")] },
@@ -22,5 +24,5 @@ $(function() {
 
     var allYAxisValues = reportBuilder.getYAxisValues(reportState.serverData, yAxis);
     
-    reportInterface.drawTable("data", allYAxisValues, reportState.serverData, yAxis, keyfigures);
+    reportInterface.drawTable("data", reportState, allYAxisValues, reportState.serverData, yAxis, keyfigures);
 });

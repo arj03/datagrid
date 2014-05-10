@@ -2,10 +2,20 @@
 
     // public
 
-    this.addSortHeaders = function(domId) 
+    this.addSortHeaders = function(domId, reportState) 
     {
         // sort
-        _.each($(format("#{0} tr.header td", domId)), function(e) { $(e).append(format('&nbsp;<img class="sortdown" src="{0}arrow_up.png"/>&nbsp;<img class="sortup" src="{0}arrow_down.png"/>', reportState.imagePath)); });
+        _.each($(format("#{0} tr.header td", domId)), function(e, i) { 
+            if (reportState.sortRowIndex == i && reportState.sortDirection == "down")
+                $(e).append(format('&nbsp;<img class="sortdown" src="{0}arrow_up_selected.png"/>', reportState.imagePath));
+            else
+                $(e).append(format('&nbsp;<img class="sortdown" src="{0}arrow_up.png"/>', reportState.imagePath));
+
+            if (reportState.sortRowIndex == i && reportState.sortDirection == "up")
+                $(e).append(format('&nbsp;<img class="sortup" src="{0}arrow_down_selected.png"/>', reportState.imagePath));
+            else
+                $(e).append(format('&nbsp;<img class="sortup" src="{0}arrow_down.png"/>', reportState.imagePath));
+        });
 
         $(".sortup").unbind().click(function(e) {
 
@@ -13,7 +23,7 @@
             reportState.sortDirection = "up";
 
             if (reportState.useExpandCollapse)
-                reportState.drawData(reportBuilder.sortExpandedData(reportState.serverData, reportState.dimensionsY, reportState.sortRowIndex, reportState.sortDirection));
+                reportState.drawData(reportBuilder.sortExpandedData(reportState.serverData, reportState.dimensionsY, reportState.sortRowIndex, reportState.sortDirection, reportState.expandedCells));
             else
                 reportState.drawData(reportBuilder.sortData(reportState.serverData, reportState.sortRowIndex, reportState.sortDirection));
         });
@@ -24,15 +34,14 @@
             reportState.sortDirection = "down";
 
             if (reportState.useExpandCollapse)
-                reportState.drawData(reportBuilder.sortExpandedData(reportState.serverData, reportState.dimensionsY, reportState.sortRowIndex, reportState.sortDirection));
+                reportState.drawData(reportBuilder.sortExpandedData(reportState.serverData, reportState.dimensionsY, reportState.sortRowIndex, reportState.sortDirection, reportState.expandedCells));
             else
                 reportState.drawData(reportBuilder.sortData(reportState.serverData, reportState.sortRowIndex, reportState.sortDirection));
-
         });
     };
 
     // adds expand/collapse all to dimension headers and hookup click handlers
-    this.addExpandCollapseHeaders = function(domId)
+    this.addExpandCollapseHeaders = function(domId, reportState)
     {
         _.each(reportState.dimensionsY, function(e, i) {
 
@@ -47,7 +56,8 @@
                 header.append(format("&nbsp;<img class='collapseAll' src='{0}collapse.png'>", reportState.imagePath));
         });
 
-        this.hookupExpandCollapseAll(domId);
+
+        this.hookupExpandCollapseAll(domId, reportState);
     };
 
     // domId
@@ -58,7 +68,7 @@
     // xAxisRestrictions [{ name: '', visible: false }, ...] 
     // xAxisDimValues [value1, value2, ...]
     //
-    this.drawTable = function(domId, allYaxisValues, data, yAxis, xAxis, xAxisRestrictions, xAxisDimValues)
+    this.drawTable = function(domId, reportState, allYaxisValues, data, yAxis, xAxis, xAxisRestrictions, xAxisDimValues)
     {
         var dataTable = $(format("#{0}", domId));
         var dataTableHTML = "";
@@ -154,7 +164,7 @@
                 }
             });
 
-            dataTableHTML += reportInterface.rowToHTML(values, row.type, formatFunctions, yAxis, row.values);
+            dataTableHTML += reportInterface.rowToHTML(values, row.type, formatFunctions, yAxis, row.values, reportState);
 
             lastDimValues = unmodifiedYaxis;
         });
@@ -162,10 +172,10 @@
         dataTable.html(dataTableHTML);
 
         if (reportState.useExpandCollapse)
-            hookupExpandCollapse(domId);
+            hookupExpandCollapse(domId, reportState);
     };
 
-    this.hookupExpandCollapseAll = function(domId) 
+    this.hookupExpandCollapseAll = function(domId, reportState) 
     {
         $(format("#{0} img.expandAll", domId)).unbind().click(function(e) {
             var td = $(this).closest("td");
@@ -238,7 +248,7 @@
         $(format("table#{0} td:nth-child({1})", domId, colIndex)).css("border-right", "1.5px solid #ccc");
     };
 
-    this.rowToHTML = function(values, rowType, formatFunctions, yAxis, startValues) 
+    this.rowToHTML = function(values, rowType, formatFunctions, yAxis, startValues, reportState) 
     {
         var valuesHTML = "";
 
@@ -297,7 +307,7 @@
     // private
     
     // adds click handler to expand/collapse buttons in the table
-    function hookupExpandCollapse(domId)
+    function hookupExpandCollapse(domId, reportState)
     {
         $(format("#{0} .expandDimension", domId)).click(function() {
             var td = $(this).closest("td");
