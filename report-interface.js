@@ -6,6 +6,13 @@
     {
         // sort
         _.each($(format("#{0} tr.header td", domId)), function(e, i) { 
+
+            // if dim, then it needs to be expanded
+            if (reportState.useExpandCollapse && 
+                i < reportState.dimensionsY.length &&
+                i > _.keys(reportState.expandedCells).length)
+                return; // continue
+
             if (reportState.sortRowIndex == i && reportState.sortDirection == "down")
                 $(e).append('<a href="" class="sortdown sortdownselected"><span></span></a>');
             else
