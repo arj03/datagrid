@@ -24,7 +24,6 @@ $(function() {
         { type: 'grandtotal', values: [cellValue('Total'), cellValue("1073"), cellValue("115232")] }
     ];
     
-    reportState.useExpandCollapse = false;
     reportState.imagePath = "../../images/";
 
     reportBuilder.localizedHeaders(yAxis, keyfigures, reportState);

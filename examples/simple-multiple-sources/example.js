@@ -31,7 +31,6 @@ $(function() {
 
     var reportState = new ReportState();
 
-    reportState.useExpandCollapse = false;
     reportState.imagePath = "../../images/";
 
     reportState.serverData = reportBuilder.combineData([salesData, adData], [salesKeyfigures, adKeyfigures], yAxis);

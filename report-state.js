@@ -1,4 +1,4 @@
-﻿function ReportState() {
+﻿function ReportState(options) {
 
     // format: [{ type: "row|subtotal|grandtotal", values: [{ sortValue: "", displayValue: "", sortValueType: "string" }] ]
     this.serverData = [];
@@ -10,7 +10,7 @@
     // must be a function that can request data again and draw
     this.drawNewData = null;
 
-    this.useExpandCollapse = true;
+    this.useExpandCollapse = options != null && options['useExpandCollapse'] != null ? options['useExpandCollapse'] : false;
 
     // FIXME: document format and use, used to use dim, now uses dim id
     // this maps dimension ids to list of expanded cells

@@ -10,7 +10,7 @@ $(function() {
     // normally one would request data here from the server using yAxis and keyfigures
     // but to keep things simple, we type in the result below
 
-    var reportState = new ReportState();
+    var reportState = new ReportState({ useExpandCollapse: true });
 
     reportState.dimensionsY = _.map(yAxis, function(e) { return e.id; });
 
@@ -20,8 +20,7 @@ $(function() {
         { type: 'row', values: [cellValue('Berlin'), cellValue(''), cellValue("743"), cellValue("50032")] },
         { type: 'grandtotal', values: [cellValue('Grand total'), cellValue(''), cellValue("1073"), cellValue("115232")] }
     ];
-    
-    reportState.useExpandCollapse = true;
+
     reportState.imagePath = "../../images/";
 
     var allYAxisValues = reportBuilder.getYAxisValues(reportState.serverData, yAxis);
