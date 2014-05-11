@@ -19,8 +19,6 @@ $(function() {
         { type: 'grandtotal', values: [cellValue('Grand total'), cellValue("1073"), cellValue("115232")] }
     ];
     
-    reportState.imagePath = "../../images/";
-
     var allYAxisValues = reportBuilder.getYAxisValues(reportState.serverData, yAxis);
     
     reportInterface.drawTable("data", reportState, allYAxisValues, reportState.serverData, yAxis, keyfigures);

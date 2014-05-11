@@ -40,34 +40,77 @@ table.datagrid td.data-kf-value {
 	text-align: right;
 }
 
-.collapseDimension {
-    padding-right: 5px;
-    cursor: pointer;
+.collapseDimension span {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+    margin-right: 5px;
+    background-image: url("images/collapse.png");
 }
 
-.expandDimension {
-    padding-right: 5px;
-    cursor: pointer;
+.expandDimension span {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+    margin-right: 5px;
+    background-image: url("images/expand.png");
 }
 
-.collapseAll {
-    padding-right: 5px;
-    cursor: pointer;
+.collapseAll span {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+    margin-left: 5px;
+    background-image: url("images/collapse.png");
 }
 
+.expandAll span {
+	width: 10px;
+	height: 10px;
+	display: inline-block;
+    margin-left: 5px;
+    background-image: url("images/expand.png");
+}
+
+.sortup,
+.sortdown
+ {
+    position: relative;
+    padding-right: 21px;
+}
+
+.sortup span {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+    margin-left: 5px;
+    position: absolute;
+    top: 3px;
+    background-image: url("images/arrow_down.png");
+}
+
+.sortupselected span {
+    background-image: url("images/arrow_down_selected.png");
+}
+
+.sortdown span {
+	width: 16px;
+	height: 16px;
+	display: inline-block;
+    margin-left: 5px;
+    position: absolute;
+    top: 3px;
+    background-image: url("images/arrow_up.png");
+}
+
+.sortdownselected span {
+    background-image: url("images/arrow_up_selected.png");
+}
+
+/* remove a border when clicked */
+.sortdown,
+.sortup,
+.collapseAll,
 .expandAll {
-    padding-right: 5px;
-    cursor: pointer;
-}
-
-.sortup {
-    position: relative;
-    top: 4px;
-    cursor: pointer;
-}
-
-.sortdown {
-    position: relative;
-    top: 4px;
-    cursor: pointer;
+    outline: none;
 }

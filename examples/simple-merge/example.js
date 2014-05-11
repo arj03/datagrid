@@ -63,8 +63,6 @@ $(function() {
 
     var reportState = new ReportState();
 
-    reportState.imagePath = "../../images/";
-
     var allYAxisValues = reportBuilder.getAllYAxisValues([thisYearData, lastYearData], yAxis);
 
     var combinedKeyFigures = [

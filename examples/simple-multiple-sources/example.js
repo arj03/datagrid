@@ -31,8 +31,6 @@ $(function() {
 
     var reportState = new ReportState();
 
-    reportState.imagePath = "../../images/";
-
     reportState.serverData = reportBuilder.combineData([salesData, adData], [salesKeyfigures, adKeyfigures], yAxis);
 
     var allYAxisValues = reportBuilder.getYAxisValues(reportState.serverData, yAxis);

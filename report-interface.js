@@ -7,17 +7,19 @@
         // sort
         _.each($(format("#{0} tr.header td", domId)), function(e, i) { 
             if (reportState.sortRowIndex == i && reportState.sortDirection == "down")
-                $(e).append(format('&nbsp;<img class="sortdown" src="{0}arrow_up_selected.png"/>', reportState.imagePath));
+                $(e).append('<a href="" class="sortdown sortdownselected"><span></span></a>');
             else
-                $(e).append(format('&nbsp;<img class="sortdown" src="{0}arrow_up.png"/>', reportState.imagePath));
+                $(e).append('<a href="" class="sortdown"><span></span></a>');
 
             if (reportState.sortRowIndex == i && reportState.sortDirection == "up")
-                $(e).append(format('&nbsp;<img class="sortup" src="{0}arrow_down_selected.png"/>', reportState.imagePath));
+                $(e).append('<a href="" class="sortup sortupselected"><span></span></a>');
             else
-                $(e).append(format('&nbsp;<img class="sortup" src="{0}arrow_down.png"/>', reportState.imagePath));
+                $(e).append('<a href="" class="sortup"><span></span></a>');
         });
 
         $(".sortup").unbind().click(function(e) {
+
+            e.preventDefault();
 
             reportState.sortRowIndex = $(this).parent().index();
             reportState.sortDirection = "up";
@@ -29,6 +31,8 @@
         });
 
         $(".sortdown").unbind().click(function(e) {
+
+            e.preventDefault();
 
             reportState.sortRowIndex = $(this).parent().index();
             reportState.sortDirection = "down";
@@ -45,15 +49,15 @@
     {
         _.each(reportState.dimensionsY, function(e, i) {
 
-            var noExpandedCells = $(format("img.expandDimension.{0}", e)).length;
-            var noCollapsedCells = $(format("img.collapseDimension.{0}", e)).length;
+            var noExpandedCells = $(format("a.expandDimension.{0}", e)).length;
+            var noCollapsedCells = $(format("a.collapseDimension.{0}", e)).length;
 
             var header = $(format("#{0} tr.header td:eq({1})", domId, i));
 
             if (noExpandedCells > 0)
-                header.append(format("&nbsp;<img class='expandAll' src='{0}expand.png'>", reportState.imagePath));
+                header.append('<a href="" class="expandAll"><span></span></a>');
             else if (noCollapsedCells > 0)
-                header.append(format("&nbsp;<img class='collapseAll' src='{0}collapse.png'>", reportState.imagePath));
+                header.append('<a href="" class="collapseAll"><span></span></a>');
         });
 
 
@@ -177,11 +181,14 @@
 
     this.hookupExpandCollapseAll = function(domId, reportState) 
     {
-        $(format("#{0} img.expandAll", domId)).unbind().click(function(e) {
+        $(format("#{0} a.expandAll", domId)).unbind().click(function(e) {
+
+            e.preventDefault();
+
             var td = $(this).closest("td");
             var dimId = reportState.dimensionsY[td[0].cellIndex];
 
-            var cellsToExpand = $(format("img.expandDimension.{0}", dimId));
+            var cellsToExpand = $(format("a.expandDimension.{0}", dimId));
 
             _.each(cellsToExpand, function(e, i) {
                 var expandValue = $(e).data("expandcollapse");
@@ -190,9 +197,8 @@
                     reportState.expandedCells[dimId].push(expandValue);
                 else
                     reportState.expandedCells[dimId] = [expandValue];
-
-                // we don't need data-expandcollapse as we draw anyway
-                $(e).replaceWith(format("<img src='{0}collapse.png' class='collapseDimension'/>", reportState.imagePath));
+                
+                $(e).removeClass("expandDimension").addClass("collapseDimension");
             });
 
             reportState.drawNewData();
@@ -202,9 +208,11 @@
             var td = $(this).closest("td");
             var dimId = reportState.dimensionsY[td[0].cellIndex];
 
-            var cellsToCollapse = $(format("img.collapseDimension.{0}", dimId));
+            var cellsToCollapse = $(format("a.collapseDimension.{0}", dimId));
 
             _.each(cellsToCollapse, function(e, i) {
+
+                e.preventDefault();
 
                 var td = $(e).closest("td");
                 var value = td.text();
@@ -226,8 +234,7 @@
                     });
                 });
 
-                // we don't need data-expandcollapse as we draw anyway
-                $(e).replaceWith(format("<img src='{0}expand.png' class='expandDimension'/>", reportState.imagePath));
+                $(e).removeClass("collapseDimension").addClass("expandDimension");
             });
 
             reportState.drawNewData();
@@ -276,12 +283,12 @@
 
                 if (dimId in reportState.expandedCells) {
                     if (_.contains(reportState.expandedCells[dimId], lookupKey)) {
-                        valuesHTML += format("<td><img src='{0}collapse.png' data-expandcollapse='{1}' class='collapseDimension {3}' />{2}</td>", reportState.imagePath, lookupKey, dimValue, dimId);
+                        valuesHTML += format("<td><a href='' data-expandcollapse='{0}' class='collapseDimension {2}'><span></span></a>{1}</td>", lookupKey, dimValue, dimId);
                         return;
                     }
                 }
 
-                valuesHTML += format("<td><img src='{0}expand.png' data-expandcollapse='{1}' class='expandDimension {3}' />{2}</td>", reportState.imagePath, lookupKey, dimValue, dimId);
+                valuesHTML += format("<td><a href='' data-expandcollapse='{0}' class='expandDimension {2}'><span></span></a>{1}</td>", lookupKey, dimValue, dimId);
             }
             else 
 	        {
@@ -309,7 +316,10 @@
     // adds click handler to expand/collapse buttons in the table
     function hookupExpandCollapse(domId, reportState)
     {
-        $(format("#{0} .expandDimension", domId)).click(function() {
+        $(format("#{0} .expandDimension", domId)).click(function(e) {
+
+            e.preventDefault();
+
             var td = $(this).closest("td");
             var dimId = reportState.dimensionsY[td[0].cellIndex];
 
@@ -321,12 +331,15 @@
                 reportState.expandedCells[dimId] = [expandValue];
 
             // we don't need data-expandcollapse as we draw anyway
-            $(this).replaceWith(format("<img src='{0}collapse.png' class='collapseDimension'/>", reportState.imagePath));
+            $(this).removeClass("expandDimension").addClass("collapseDimension");
 
             reportState.drawNewData();
         });
 
-        $(format("#{0} .collapseDimension", domId)).click(function() {
+        $(format("#{0} .collapseDimension", domId)).click(function(e) {
+
+            e.preventDefault();
+
             var td = $(this).closest("td");
             var dimId = reportState.dimensionsY[td[0].cellIndex];
 
@@ -351,7 +364,7 @@
             });
 
             // we don't need data-expandcollapse as we draw anyway
-            $(this).replaceWith(format("<img src='{0}expand.png' class='expandDimension'/>", reportState.imagePath));
+            $(this).removeClass("collapseDimension").addClass("expandDimension");
 
             reportState.drawNewData();
         });
