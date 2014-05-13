@@ -3,6 +3,7 @@ This is a work in progress, documentation will come. For now the examples direct
 Requirements:
  - underscore.js
  - jQuery 
+ - font awesome
 
 reportBuilder:
  - sortData

@@ -14,14 +14,14 @@
                 return; // continue
 
             if (reportState.sortRowIndex == i && reportState.sortDirection == "down")
-                $(e).append('<a href="" class="sortdown sortdownselected"><span></span></a>');
+                $(e).append('<i class="fa fa-angle-up sortdown sortdownselected"></i>');
             else
-                $(e).append('<a href="" class="sortdown"><span></span></a>');
+                $(e).append('<i class="fa fa-angle-up sortdown"></i>');
 
             if (reportState.sortRowIndex == i && reportState.sortDirection == "up")
-                $(e).append('<a href="" class="sortup sortupselected"><span></span></a>');
+                $(e).append('<i class="fa fa-angle-down sortup sortupselected"></i>');
             else
-                $(e).append('<a href="" class="sortup"><span></span></a>');
+                $(e).append('<i class="fa fa-angle-down sortup"></i>');
         });
 
         $(".sortup").unbind().click(function(e) {
@@ -56,15 +56,16 @@
     {
         _.each(reportState.dimensionsY, function(e, i) {
 
-            var noExpandedCells = $(format("a.expandDimension.{0}", e)).length;
-            var noCollapsedCells = $(format("a.collapseDimension.{0}", e)).length;
+            // FIXME: domid
+            var noExpandedCells = $(format("i.expandDimension.{0}", e)).length;
+            var noCollapsedCells = $(format("i.collapseDimension.{0}", e)).length;
 
             var header = $(format("#{0} tr.header td:eq({1})", domId, i));
 
             if (noExpandedCells > 0)
-                header.append('<a href="" class="expandAll"><span></span></a>');
+                header.append('<i class="fa fa-plus expandAll"></i>');
             else if (noCollapsedCells > 0)
-                header.append('<a href="" class="collapseAll"><span></span></a>');
+                header.append('<i class="fa fa-minus collapseAll"></i>');
         });
 
 
@@ -188,14 +189,14 @@
 
     this.hookupExpandCollapseAll = function(domId, reportState) 
     {
-        $(format("#{0} a.expandAll", domId)).unbind().click(function(e) {
+        $(format("#{0} i.expandAll", domId)).unbind().click(function(e) {
 
             e.preventDefault();
 
             var td = $(this).closest("td");
             var dimId = reportState.dimensionsY[td[0].cellIndex];
 
-            var cellsToExpand = $(format("a.expandDimension.{0}", dimId));
+            var cellsToExpand = $(format("i.expandDimension.{0}", dimId));
 
             _.each(cellsToExpand, function(e, i) {
                 var expandValue = $(e).data("expandcollapse");
@@ -211,15 +212,16 @@
             reportState.drawNewData();
         });
 
-        $(format("#{0} img.collapseAll", domId)).unbind().click(function(e) {
+        $(format("#{0} i.collapseAll", domId)).unbind().click(function(e) {
+
+            e.preventDefault();
+
             var td = $(this).closest("td");
             var dimId = reportState.dimensionsY[td[0].cellIndex];
 
-            var cellsToCollapse = $(format("a.collapseDimension.{0}", dimId));
+            var cellsToCollapse = $(format("i.collapseDimension.{0}", dimId));
 
             _.each(cellsToCollapse, function(e, i) {
-
-                e.preventDefault();
 
                 var td = $(e).closest("td");
                 var value = td.text();
@@ -229,7 +231,7 @@
                 // collapse multiple
                 // we have encoded the parent values in the collapse img tag
                 // so we need to remove these as well
-                var cells = _.map($(format("img.collapseDimension[data-expandcollapse*='{0}']", dimId + ':' + value)), function(e2) { return $(e2).data('expandcollapse'); });
+                var cells = _.map($(format("i.collapseDimension[data-expandcollapse*='{0}']", dimId + ':' + value)), function(e2) { return $(e2).data('expandcollapse'); });
 
                 _.each(reportState.expandedCells, function(tempValues, expandedDim) {
                     _.each(cells, function(cell) {
@@ -290,12 +292,12 @@
 
                 if (dimId in reportState.expandedCells) {
                     if (_.contains(reportState.expandedCells[dimId], lookupKey)) {
-                        valuesHTML += format("<td><a href='' data-expandcollapse='{0}' class='collapseDimension {2}'><span></span></a>{1}</td>", lookupKey, dimValue, dimId);
+                        valuesHTML += format("<td><i class='fa fa-minus collapseDimension {1}' data-expandcollapse='{0}'></i>{2}</td>", lookupKey, dimId, dimValue);
                         return;
                     }
                 }
 
-                valuesHTML += format("<td><a href='' data-expandcollapse='{0}' class='expandDimension {2}'><span></span></a>{1}</td>", lookupKey, dimValue, dimId);
+                valuesHTML += format("<td><i class='fa fa-plus expandDimension {1}' data-expandcollapse='{0}'></i>{2}</td>", lookupKey, dimId, dimValue);
             }
             else 
 	        {
@@ -358,7 +360,7 @@
             // collapse multiple
             // we have encoded the parent values in the collapse img tag
             // so we need to remove these as well
-            var cells = _.map($(format("img.collapseDimension[data-expandcollapse*='{0}']", dimId + ':' + value)), function(e) { return $(e).data('expandcollapse'); });
+            var cells = _.map($(format("i.collapseDimension[data-expandcollapse*='{0}']", dimId + ':' + value)), function(e) { return $(e).data('expandcollapse'); });
 
             _.each(reportState.expandedCells, function(tempValues, expandedDim) {
                 _.each(cells, function(cell) {

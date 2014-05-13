@@ -1,0 +1,63 @@
+/* simple table */
+table.datagrid {
+    border-spacing: 0px;
+    border-collapse: separate;
+	margin-bottom: 30px;
+	border-left: 1.5px solid #ccc;
+	border-right: 1.5px solid #ccc;
+}
+
+table.datagrid tbody td {
+	padding: 7px 15px;
+	border-bottom: solid 1px #ccc;
+}
+
+table.datagrid thead td {
+	padding: 15px 15px;
+}
+
+table.datagrid tr.header {
+    background-color: #52607E;
+    font-weight: bold;
+    color: #fff;
+}
+
+table.datagrid tbody tr:nth-child(2n+1) td {
+    background-color: #FBFBFB;
+}
+
+table.datagrid tr.grandtotal td {
+    background-color: #D3D3D3 !important;
+	border-top: solid 1px #000;
+}
+
+table.datagrid tr.subtotal td {
+    background-color: #D3D3D3 !important;
+	border-bottom: solid 1px #000;
+}
+
+table.datagrid td.data-kf-value {
+	text-align: right;
+}
+
+i.fa {
+    font-color: #000;
+    margin-left: 7px;
+    cursor: pointer;
+}
+
+i.expandDimension,
+i.collapseDimension {
+    margin-left: 0px;
+    margin-right: 5px;
+}
+
+i.fa-plus,
+i.fa-minus {
+ font-size: 0.8em;
+}
+
+i.sortdownselected,
+i.sortupselected {
+    font-weight: bold;
+}
