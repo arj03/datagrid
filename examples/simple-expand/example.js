@@ -60,7 +60,7 @@ $(function() {
         reportState.serverData.push({ type: 'grandtotal', values: [cellValue('Grand total'), cellValue(''), cellValue("1073"), cellValue("115232")] });
 
         if (reportState.sortRowIndex != -1)
-            reportState.drawData(reportBuilder.sortExpandedData(reportState.serverData, reportState.dimensionsY, reportState.sortRowIndex, reportState.sortDirection));
+            reportState.drawData(reportBuilder.sortExpandedData(reportState.serverData, reportState.dimensionsY, reportState.sortRowIndex, reportState.sortDirection, reportState.expandedCells));
         else
             reportState.drawData(reportState.serverData);
     };
