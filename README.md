@@ -11,8 +11,8 @@ form. It was written out of frustration with the DevExpress Pivot Grid
 control but is in no way tied to data from an OLAP cube. It can
 display data from an SQL Server, Olap cube or just plain Javascript
 data equally well. Datagrid allows collapse / expand for very large
-data sets, local sorting, helper functions for working with data and
-localization support.
+data sets, local and server-side sorting, helper functions for working
+with data and localization support.
 
 The datagrid library is split into two seperate parts: the report
 builder and the report interface. The purpose of report builder is to
