@@ -24,30 +24,29 @@
                 $(e).append('<i class="fa fa-angle-down sortup"></i>');
         });
 
-        $(".sortup").unbind().click(function(e) {
-
-            e.preventDefault();
-
-            reportState.sortRowIndex = $(this).parent().index();
-            reportState.sortDirection = "up";
+        function sortAndDrawDataLocally(rowIndex, direction)
+        {
+            reportState.sortRowIndex = rowIndex;
+            reportState.sortDirection = direction;
 
             if (reportState.useExpandCollapse)
                 reportState.drawData(reportBuilder.sortExpandedData(reportState.serverData, reportState.dimensionsY, reportState.sortRowIndex, reportState.sortDirection, reportState.expandedCells));
             else
                 reportState.drawData(reportBuilder.sortData(reportState.serverData, reportState.sortRowIndex, reportState.sortDirection));
+        }
+
+        $(".sortup").unbind().click(function(e) {
+
+            e.preventDefault();
+
+            sortAndDrawDataLocally($(this).parent().index(), "up");
         });
 
         $(".sortdown").unbind().click(function(e) {
 
             e.preventDefault();
 
-            reportState.sortRowIndex = $(this).parent().index();
-            reportState.sortDirection = "down";
-
-            if (reportState.useExpandCollapse)
-                reportState.drawData(reportBuilder.sortExpandedData(reportState.serverData, reportState.dimensionsY, reportState.sortRowIndex, reportState.sortDirection, reportState.expandedCells));
-            else
-                reportState.drawData(reportBuilder.sortData(reportState.serverData, reportState.sortRowIndex, reportState.sortDirection));
+            sortAndDrawDataLocally($(this).parent().index(), "down");
         });
     };
 
@@ -56,9 +55,8 @@
     {
         _.each(reportState.dimensionsY, function(e, i) {
 
-            // FIXME: domid
-            var noExpandedCells = $(format("i.expandDimension.{0}", e)).length;
-            var noCollapsedCells = $(format("i.collapseDimension.{0}", e)).length;
+            var noExpandedCells = $(format("#{0} i.expandDimension.{1}", domId, e)).length;
+            var noCollapsedCells = $(format("{0} i.collapseDimension.{1}", domId, e)).length;
 
             var header = $(format("#{0} tr.header td:eq({1})", domId, i));
 
