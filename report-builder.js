@@ -51,7 +51,12 @@
 
             var dim = dimensionsY[currentLevelIndex];
 
-            if (expandedCells[dim] && _.any(expandedCells[dim], function(expandedValue) { return expandedValue.indexOf(e.values[currentLevelIndex].displayValue) != -1; })) // start of sub total
+            function findValueInExpanded(expandedValue) {
+                var values = _.map(expandedValue.split('|'), function (e) { return e.split(":")[1]; });
+                return _.contains(values, e.values[currentLevelIndex].displayValue);
+            };
+
+            if (expandedCells[dim] && _.any(expandedCells[dim], findValueInExpanded)) // start of sub total
             {
                 if (state != "start") {
                     _.each(currentLevelRows, function(e2) {
@@ -116,6 +121,8 @@
                     if (e.values[level].displayValue != '') {
                         if (i != 0) {
                             sortedData[0].values[level] = cloneObj(e.values[level]);
+                            if (sortedData[0].child != null)
+                                sortedData[0].child[0].values[level] = cloneObj(e.values[level]);
                             e.values[level].displayValue = '';
                         }
                         return false; // break
