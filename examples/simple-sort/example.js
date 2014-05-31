@@ -1,7 +1,7 @@
 $(function() {
 
     function cellValue(val) {
-        return { sortValue: val, displayValue: val };
+        return { sortValue: val, displayValue: val.toString() };
     }
 
     var yAxis = [{ id: 'store', name: 'Store' }];
@@ -13,10 +13,10 @@ $(function() {
     var reportState = new ReportState();
 
     reportState.serverData = [
-        { type: 'row', values: [cellValue('Copenhagen'), cellValue("210"), cellValue("43100")] },
-        { type: 'row', values: [cellValue('Stockholm'), cellValue("120"), cellValue("22100")] },
-        { type: 'row', values: [cellValue('Berlin'), cellValue("743"), cellValue("50032")] },
-        { type: 'grandtotal', values: [cellValue('Grand total'), cellValue("1073"), cellValue("115232")] }
+        { type: 'row', values: [cellValue('Copenhagen'), cellValue(210), cellValue(43100)] },
+        { type: 'row', values: [cellValue('Stockholm'), cellValue(120), cellValue(22100)] },
+        { type: 'row', values: [cellValue('Berlin'), cellValue(743), cellValue(50032)] },
+        { type: 'grandtotal', values: [cellValue('Grand total'), cellValue(1073), cellValue(115232)] }
     ];
     
     var allYAxisValues = reportBuilder.getYAxisValues(reportState.serverData, yAxis);
