@@ -51,43 +51,32 @@
 
             var dim = dimensionsY[currentLevelIndex];
 
-            if (expandedCells[dim] && _.any(expandedCells[dim], function(expandedValue) { return expandedValue.indexOf(e.values[currentLevelIndex].displayValue) != -1; })) // start of sub total
-            {
-                if (state != "start") {
-                    _.each(currentLevelRows, function(e2) {
-                        treeLastData.push(e2);
-                    });
-                } else {
+            function findValueInExpanded(expandedValue) {
+                var values = _.map(expandedValue.split('|'), function (e) { return e.substring(e.indexOf(":") + 1); });
+                return values[currentLevelIndex] == e.values[currentLevelIndex].displayValue;
+            };
+
+            while (true) {
+                var startOfSubTotal = expandedCells[dim] && _.any(expandedCells[dim], findValueInExpanded);
+                if (startOfSubTotal) {
                     tempState.push(currentLevelRows);
-                }
-
-                currentLevelRows = [];
-                currentLevelRows.push(e);
-                currentLevelIndex++;
-
-                state = "start";
+                    currentLevelRows = [];
+                    currentLevelIndex++;
+                } else
+                    break;
             }
-            else if (e.type == 'subtotal') // this ends a sub total
+
+            if (e.type == 'subtotal') // this ends a sub total
             {
                 e.child = currentLevelRows;
-
-                if (tempState.length > 0)
-                    currentLevelRows = tempState.pop();
-                else
-                    currentLevelRows = [];
+                currentLevelRows = tempState.pop();
 
                 currentLevelRows.push(e);
                 currentLevelIndex--;
-
-                state = "end";
             }
             else if (e.type == 'grandtotal') // mother of all
             {
-                _.each(currentLevelRows, function(e2) {
-                    treeLastData.push(e2);
-                });
-
-                e.child = treeLastData;
+                e.child = currentLevelRows;
                 treeLastData = e;
             }
             else
@@ -109,19 +98,6 @@
 
             if (direction == "up")
                 sortedData = sortedData.reverse();
-
-            if (level >= 0) {
-                // Fix expand to be on top
-                _.each(sortedData, function(e, i) {
-                    if (e.values[level].displayValue != '') {
-                        if (i != 0) {
-                            sortedData[0].values[level] = cloneObj(e.values[level]);
-                            e.values[level].displayValue = '';
-                        }
-                        return false; // break
-                    }
-		        });
-            }
 
             el.child = sortedData;
         }
