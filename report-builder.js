@@ -99,6 +99,20 @@
             if (direction == "up")
                 sortedData = sortedData.reverse();
 
+            if (level >= 0) { // Fix expand to be on top
+                _.each(sortedData, function(e, i) {
+                    if (e.values[level].displayValue != '') {
+                        if (i != 0) {
+                            sortedData[0].values[level] = cloneObj(e.values[level]);
+                            if (sortedData[0].child != null)
+                                sortedData[0].child[0].values[level] = cloneObj(e.values[level]);
+                            e.values[level].displayValue = '';
+                        }
+                        return false; // break
+                    }
+                });
+            }
+
             el.child = sortedData;
         }
 
