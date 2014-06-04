@@ -33,7 +33,7 @@
     };
 
     // this can sort expanded data, making sure to sort each independently
-    this.sortExpandedData = function(data, dimensionsY, rowIndex, direction, expandedCells) 
+    this.sortExpandedData = function(data, dimensionsY, rowIndex, direction, expandedCells, mostSpecificOnly)
     {
         // transforms data into a tree, were the parent is the sub total of the leaves
 
@@ -44,6 +44,8 @@
 
         var state = "";
         var tempState = []; // stack of unfinished children
+
+        var maxLevel = 0;
 
         _.each(data, function(row) {
 
@@ -60,6 +62,10 @@
                 var startOfSubTotal = expandedCells[dim] && _.any(expandedCells[dim], findValueInExpanded);
                 if (startOfSubTotal) {
                     tempState.push(currentLevelRows);
+
+                    if (currentLevelIndex > maxLevel)
+                        maxLevel = currentLevelIndex;
+
                     currentLevelRows = [];
                     currentLevelIndex++;
                 } else
@@ -85,6 +91,9 @@
 
         function sortValues(el, level) 
 	    {
+            if (mostSpecificOnly && level != maxLevel)
+                return;
+
             var sortedList = [];
             var sortedData = [];
 

@@ -30,7 +30,8 @@
             reportState.sortDirection = direction;
 
             if (reportState.useExpandCollapse)
-                reportState.drawData(reportBuilder.sortExpandedData(reportState.serverData, reportState.dimensionsY, reportState.sortRowIndex, reportState.sortDirection, reportState.expandedCells));
+                reportState.drawData(reportBuilder.sortExpandedData(reportState.serverData, reportState.dimensionsY, reportState.sortRowIndex, 
+                                                                    reportState.sortDirection, reportState.expandedCells, reportState.sortMostSpecificOnly));
             else
                 reportState.drawData(reportBuilder.sortData(reportState.serverData, reportState.sortRowIndex, reportState.sortDirection));
         }

@@ -1,4 +1,9 @@
-﻿function ReportState(options) {
+﻿function booleanOption(o, options, name)
+{
+    o[name] = options != null && options[name] != null ? options[name] : false;
+}
+
+function ReportState(options) {
 
     // format: [{ type: "row|subtotal|grandtotal", values: [{ sortValue: "", displayValue: "", sortValueType: "string" }] ]
     this.serverData = [];
@@ -10,7 +15,8 @@
     // must be a function that can request data again and draw
     this.drawNewData = null;
 
-    this.useExpandCollapse = options != null && options['useExpandCollapse'] != null ? options['useExpandCollapse'] : false;
+    booleanOption(this, options, 'useExpandCollapse');
+    booleanOption(this, options, 'sortMostSpecificOnly');
 
     // FIXME: document format and use, used to use dim, now uses dim id
     // this maps dimension ids to list of expanded cells
